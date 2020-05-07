@@ -107,15 +107,31 @@ Songs::Songs()
 
 void Songs::add_songs()
 {
-    std::string text;
-    std::cout << "\nInsert songs, to break: x" << std::endl;
-    std::cin.ignore(); // Para ignorar la linea en blanco q deja el std::endl
-    while (text != "x")
+    std::string song, artist;
+    int songsz = songs.size();
+    std::cout << "\nInsert data, to break: x" << std::endl;
+
+    while (true)
     {
-        std::getline(std::cin, text);
-        if (text != "x")
+        std::cin.ignore(); // Para ignorar la linea en blanco q deja el std::endl
+        std::string decision;
+        std::cout << "\nSong: ";
+        std::getline(std::cin, song);
+        std::cout << "Artist: ";
+        std::getline(std::cin, artist);
+        if (song != "x" && artist != "x")
         {
-            songs.push_back(text);
+            songs.push_back({song, artist});
+        }
+        std::cout << "\nDo you want to add another song?(Y/n)\n";
+        std::cin >> decision;
+        if (decision == "Y" || decision == "y")
+        {
+            continue;
+        }
+        else
+        {
+            break;
         }
     }
     menu();
@@ -125,9 +141,14 @@ void Songs::show_songs()
 {
 
     std::cout << "\nThese are your " << songs.size() << " songs" << std::endl;
+    std::cout << "\tSong\t\t\t\tArtist\n";
     for (int i = 0; i < songs.size(); i++)
     {
-        std::cout << i + 1 << ". " << songs[i] << std::endl;
+        for (int j = 0; j < 2; j++)
+        {
+            j == 0 ? std::cout << i + 1 << ". " << songs[i][j] : std::cout << "\t\t\t " << songs[i][j];
+        }
+        std::cout << std::endl;
     }
 
     std::cout << "\n\n";
@@ -173,7 +194,11 @@ void Songs::remove_songs()
         std::cout << "Select the song you want to delete:\n";
         for (int i = 0; i < songs.size(); i++)
         {
-            std::cout << i + 1 << ". " << songs[i] << std::endl;
+            for (int j = 0; j < 2; j++)
+            {
+                j == 0 ? std::cout << i + 1 << ". Song: " << songs[i][j] : std::cout << "\t\tArtist: " << songs[i][j];
+            }
+            std::cout << std::endl;
         }
         std::cout << "\n>> ";
         std::cin >> delsong;
@@ -193,7 +218,8 @@ void Songs::remove_songs()
     menu();
 }
 
-Songs::~Songs()
+/* Songs::~Songs()
 {
     std::cout << "\nbye " << user << std::endl;
 }
+ */
