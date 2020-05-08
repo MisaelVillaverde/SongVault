@@ -1,5 +1,5 @@
 #include <string>
-#include <vector>
+#include <map>
 
 void menu();
 void create_user();
@@ -8,7 +8,7 @@ class Songs
 {
     std::string user;
     int password;
-    std::vector<std::vector<std::string>> songs; // Para mañana crear vector multidimensional para almacenar a los artistas
+    std::map<std::string, std::string> songs;
 
 public:
     Songs(std::string new_user, int new_password);

@@ -108,7 +108,6 @@ Songs::Songs()
 void Songs::add_songs()
 {
     std::string song, artist;
-    int songsz = songs.size();
     std::cout << "\nInsert data, to break: x" << std::endl;
 
     while (true)
@@ -121,7 +120,7 @@ void Songs::add_songs()
         std::getline(std::cin, artist);
         if (song != "x" && artist != "x")
         {
-            songs.push_back({song, artist});
+            songs.insert({song, artist});
         }
         std::cout << "\nDo you want to add another song?(Y/n)\n";
         std::cin >> decision;
@@ -139,16 +138,14 @@ void Songs::add_songs()
 
 void Songs::show_songs()
 {
-
+    int count = 1;
     std::cout << "\nThese are your " << songs.size() << " songs" << std::endl;
     std::cout << "\tSong\t\t\t\tArtist\n";
-    for (int i = 0; i < songs.size(); i++)
+    for (auto i : songs)
     {
-        for (int j = 0; j < 2; j++)
-        {
-            j == 0 ? std::cout << i + 1 << ". " << songs[i][j] : std::cout << "\t\t\t " << songs[i][j];
-        }
+        std::cout << count << ". " << i.first << "\t\t\t" << i.second;
         std::cout << std::endl;
+        count++;
     }
 
     std::cout << "\n\n";
@@ -190,27 +187,31 @@ void Songs::remove_songs()
 {
     if (pass_code() == true)
     {
-        int delsong;
-        std::cout << "Select the song you want to delete:\n";
-        for (int i = 0; i < songs.size(); i++)
+        std::string delsong;
+        int count = 1;
+        std::cout << "Write the song you want to delete:\n";
+        std::cout << "\tSong\t\t\t\tArtist\n";
+        for (auto i : songs)
         {
-            for (int j = 0; j < 2; j++)
-            {
-                j == 0 ? std::cout << i + 1 << ". Song: " << songs[i][j] : std::cout << "\t\tArtist: " << songs[i][j];
-            }
+            std::cout << count << ". " << i.first << "\t\t\t" << i.second;
             std::cout << std::endl;
+            count++;
         }
         std::cout << "\n>> ";
         std::cin >> delsong;
 
-        if (delsong - 1 < songs.size())
+        if (songs.find(delsong) == songs.end())
         {
-            songs.erase(songs.begin() + delsong - 1);
+            // Si no lo encontró
+            std::cout << "Pls insert the name exactly as it is" << std::endl;
+            std::cin.ignore();
         }
         else
         {
-            std::cout << "Invalid number\n";
-        };
+            songs.erase(delsong);
+            std::cout << "Song erased succesfully\n"
+                      << std::endl;
+        }
     }
 
     std::cout << std::endl;
